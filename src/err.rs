@@ -1,3 +1,4 @@
+use nix::errno::Errno;
 use std::fmt;
 
 pub enum CatError {
@@ -11,7 +12,13 @@ impl fmt::Debug for CatError {
 }
 
 impl From<std::io::Error> for CatError {
-    fn from(_f: std::io::Error) -> Self {
+    fn from(_e: std::io::Error) -> Self {
+        CatError::EIO
+    }
+}
+
+impl From<Errno> for CatError {
+    fn from(_e: Errno) -> Self {
         CatError::EIO
     }
 }

@@ -17,5 +17,5 @@ fn main() {
     let mut cat_runner = CatRunner::new(file);
 
     cat_runner.run_simple().expect("run_simple fail");
-    cat_runner.run_fast();
+    cat_runner.run_fast().expect("run fast fail");
 }

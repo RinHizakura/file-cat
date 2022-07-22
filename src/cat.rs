@@ -1,6 +1,7 @@
 use crate::err::*;
 use std::fs::File;
 use std::io::{self, Read, Write};
+use std::os::unix::io::FromRawFd;
 
 pub struct CatRunner {
     file: File,
@@ -24,7 +25,13 @@ impl CatRunner {
         Ok(())
     }
 
-    pub fn run_fast(&self) {
-        todo!()
+    pub fn run_fast(&self) -> Result<()> {
+        let stdout = io::stdout();
+        let mut stdout_lock = stdout.lock();
+        let (pipe_read, pipe_write) = nix::unistd::pipe()?;
+        let (pipe_read, pipe_write) =
+            unsafe { (File::from_raw_fd(pipe_read), File::from_raw_fd(pipe_write)) };
+
+        Ok(())
     }
 }
